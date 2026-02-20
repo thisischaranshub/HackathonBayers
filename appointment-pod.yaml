@@ -8,5 +8,6 @@ spec:
   containers:
     - name: appointment
       image: 768132174891.dkr.ecr.ap-south-1.amazonaws.com/appointment-service:latest
+      imagePullPolicy: Always
       ports:
         - containerPort: 3000

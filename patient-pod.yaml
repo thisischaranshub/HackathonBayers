@@ -8,5 +8,6 @@ spec:
   containers:
     - name: patient
       image: 768132174891.dkr.ecr.ap-south-1.amazonaws.com/patient-service:latest
+      imagePullPolicy: Always
       ports:
         - containerPort: 3000
