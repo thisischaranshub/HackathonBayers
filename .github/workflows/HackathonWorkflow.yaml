@@ -49,7 +49,7 @@ jobs:
 
       - name: Terragrunt Apply
         if: github.ref == 'refs/heads/main'
-        run: terragrunt run --all apply -- -auto-approve
+        run: terragrunt run --all apply --terragrunt-non-interactive
         working-directory: Infra
 
       - name: Login to ECR
