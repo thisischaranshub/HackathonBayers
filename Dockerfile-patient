@@ -2,7 +2,7 @@
 FROM node:20-alpine
 
 # Set working directory
-WORKDIR /
+WORKDIR /app
 
 # Copy package files first (better caching)
 COPY package.json ./
@@ -17,4 +17,4 @@ COPY App .
 EXPOSE 3000
 
 # Start the app
-CMD ["node", "App/PatientService/PatientService.js"]
+CMD ["node", "/app/App/PatientService/PatientService.js"]
