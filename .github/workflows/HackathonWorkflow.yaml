@@ -14,8 +14,8 @@ jobs:
 
     env:
       AWS_REGION: ap-south-1   
-      APPOINTMENT_ECR_REPOSITORY: AppointmentService
-      PATIENT_ECR_REPOSITORY: PatientService
+      APPOINTMENT_ECR_REPOSITORY: appointment-service
+      PATIENT_ECR_REPOSITORY: patient-service
 
     steps:
       - uses: actions/checkout@v4
