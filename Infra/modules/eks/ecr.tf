@@ -16,24 +16,24 @@ resource "aws_ecr_repository" "ecr_repositories" {
 #   tags = var.tags
 # }
 
-resource "aws_ecr_lifecycle_policy" "keep_last_5_images" {
-  for_each             = toset(var.ecr_repo_names)
-  repository           = each.value
+# resource "aws_ecr_lifecycle_policy" "keep_last_5_images" {
+#   for_each             = toset(var.ecr_repo_names)
+#   repository           = each.value
 
-  policy = jsonencode({
-    rules = [
-      {
-        rulePriority = 1,
-        description  = "Keep only the last 5 images",
-        selection = {
-          tagStatus   = "any",
-          countType   = "imageCountMoreThan",
-          countNumber = 5
-        },
-        action = {
-          type = "expire"
-        }
-      }
-    ]
-  })
-}
+#   policy = jsonencode({
+#     rules = [
+#       {
+#         rulePriority = 1,
+#         description  = "Keep only the last 5 images",
+#         selection = {
+#           tagStatus   = "any",
+#           countType   = "imageCountMoreThan",
+#           countNumber = 5
+#         },
+#         action = {
+#           type = "expire"
+#         }
+#       }
+#     ]
+#   })
+# }
