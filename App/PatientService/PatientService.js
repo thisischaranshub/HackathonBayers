@@ -6,7 +6,7 @@ app.use(express.json());
 
 // In-memory data store (replace with a database in a real application)
 let patients = [
-  { id: '1', name: 'John Doe', age: 30, condition: 'Healthy' },
+  { id: '1', name: 'John Doe 2', age: 30, condition: 'Healthy' },
   { id: '2', name: 'Jane Smith', age: 45, condition: 'Hypertension' }
 ];
 
