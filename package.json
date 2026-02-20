@@ -1,0 +1,18 @@
+{
+  "name": "my-express-app",
+  "version": "1.0.0",
+  "description": "A simple Node.js app using Express",
+  "main": "App/PatientService.js",
+  "scripts": {
+    "start patient": "node App/PatientService.js",
+    "build patient": "tsc --outDir build",
+    "start appointment": "node App/AppointmentService.js",
+    "build appointment": "tsc --outDir build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
