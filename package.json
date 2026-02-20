@@ -4,8 +4,10 @@
   "description": "A simple Node.js app using Express",
   "main": "PatientService.js",
   "scripts": {
-    "start": "node PatientService.js",
-    "build": "tsc --outDir build",
+    "start patient": "node App/PatientService.js",
+    "build patient": "tsc --outDir build",
+    "start appointment": "node App/AppointmentService.js",
+    "build appointment": "tsc --outDir build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
