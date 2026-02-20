@@ -60,3 +60,17 @@ jobs:
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
           docker push $IMAGE_URI
 
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --region ap-south-1 \
+            --name poc-2-dev-cluster
+
+      - name: Deploy Appointment Pod
+        run: |
+          kubectl apply -f appointment-pod.yaml
+
+      - name: Deploy Patient Pod
+        run: |
+          kubectl apply -f patient-pod.yaml
+
