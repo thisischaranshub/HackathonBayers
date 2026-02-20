@@ -68,6 +68,6 @@ inputs = {
   eks_nodegroup_desired_size           = 1
   eks_nodegroup_max_size               = 1
   eks_nodegroup_min_size               = 1
-  ecr_repo_names                       = ["nodejs-app"]
+  ecr_repo_names                       = ["patient-service", "appointment-service"]
   tags                                 = local.common_tags
 }
