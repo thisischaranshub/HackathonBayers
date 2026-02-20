@@ -65,7 +65,6 @@ jobs:
           aws eks update-kubeconfig \
             --region ap-south-1 \
             --name poc-2-dev-cluster
-            --role-arn arn:aws:iam::768132174891:role/poc-2-tp-role
 
       - name: Deploy Appointment Pod
         run: |
