@@ -2,7 +2,7 @@
   "name": "my-express-app",
   "version": "1.0.0",
   "description": "A simple Node.js app using Express",
-  "main": "PatientService.js",
+  "main": "App/PatientService.js",
   "scripts": {
     "start patient": "node App/PatientService.js",
     "build patient": "tsc --outDir build",
