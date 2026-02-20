@@ -15,7 +15,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image for Appointment
-        run: docker build -f Dockerfile-appointment -t AppointMentService .
+        run: docker build -f Dockerfile-appointment -t appointMentService .
 
       - name: Build Docker image for Patient
-        run: docker build -f Dockerfile-patient -t PatientService .
+        run: docker build -f Dockerfile-patient -t patientService .
