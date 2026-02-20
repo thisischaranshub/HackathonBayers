@@ -5,6 +5,7 @@
   "main": "PatientService.js",
   "scripts": {
     "start": "node PatientService.js",
+    "build": "tsc --outDir build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
