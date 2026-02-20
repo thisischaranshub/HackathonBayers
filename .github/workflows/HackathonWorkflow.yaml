@@ -8,14 +8,51 @@ jobs:
   docker:
     runs-on: ubuntu-latest
 
+    env:
+      AWS_REGION: ap-south-1   
+      APPOINTMENT_ECR_REPOSITORY: AppointmentService
+      PATIENT_ECR_REPOSITORY: PatientService
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image for Appointment
-        run: docker build -f Dockerfile-appointment -t appointment-service .
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::768132174891:role/poc-2-tp-role
+          aws-region: ap-south-1
 
-      - name: Build Docker image for Patient
-        run: docker build -f Dockerfile-patient -t patient-service .
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image for Appointment
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::8}   
+          docker build -t -f Dockerfile-appointment  $APPOINTMENT_ECR_REPOSITORY:$IMAGE_TAG .
+
+      - name: Build Docker image for Appointment
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::8}   
+          docker build -t -f Dockerfile-patient $PATIENT_ECR_REPOSITORY:$IMAGE_TAG .
+
+      - name: Tag and push Docker image for Appointment
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          IMAGE_TAG=${GITHUB_SHA::8}
+          IMAGE_URI=$ACCOUNT_ID.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.APPOINTMENT_ECR_REPOSITORY }}:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $IMAGE_URI
+          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+          docker push $IMAGE_URI
+
+      - name: Tag and push Docker image for Patient
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          IMAGE_TAG=${GITHUB_SHA::8}
+          IMAGE_URI=$ACCOUNT_ID.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.PATIENT_ECR_REPOSITORY }}:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $IMAGE_URI
+          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+          docker push $IMAGE_URI
+
