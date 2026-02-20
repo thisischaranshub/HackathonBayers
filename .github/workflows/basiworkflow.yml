@@ -21,6 +21,7 @@ jobs:
         node-version: '20' # Specify the desired Node.js version
         # Caches npm dependencies for faster subsequent runs
         cache: 'npm'
+        cache-dependency-path: App/AppointMentService/package-lock.json
 
     # Step 3: Install dependencies
     - name: Install dependencies for appointment service
