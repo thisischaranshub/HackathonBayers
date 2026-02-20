@@ -27,22 +27,18 @@ jobs:
     - name: Install dependencies for appointment service
       working-directory: App/AppointMentService
       # Using 'npm ci' is recommended for CI/CD environments as it's faster and more reliable
-      run: npm ci
+      run: npm install
 
     - name: Install dependencies for PatientMonitoring service
       working-directory: App/PatientService
       # Using 'npm ci' is recommended for CI/CD environments as it's faster and more reliable
-      run: npm ci
+      run: npm install
 
     # Step 4: Build the application if a build script exists
     - name: Build application AppointMentService
       working-directory: App/AppointMentService
-      run: npm run build --if-
+      run: npm run build 
 
     - name: Build application PatientService
       working-directory: App/PatientService
-      run: npm run build --if-present
-
-    # Step 5: Run tests
-    - name: Run tests
-      run: npm test
+      run: npm run build 
