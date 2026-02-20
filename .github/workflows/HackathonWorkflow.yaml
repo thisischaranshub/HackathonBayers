@@ -28,24 +28,47 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::768132174891:role/poc-2-tp-role
           aws-region: ap-south-1
+          
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Install Terragrunt
+        run: |
+          curl -L https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64 -o terragrunt
+          chmod +x terragrunt
+          sudo mv terragrunt /usr/local/bin/
+          
+      - name: Verify AWS Identity
+        run: aws sts get-caller-identity
+
+      - name: Terragrunt Plan
+        run: terragrunt run --all plan
+        working-directory: Infra
+
+      - name: Terragrunt Apply
+        if: github.ref == 'refs/heads/main'
+        run: terragrunt run --all apply -auto-approve
+        working-directory: Infra
 
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image for Appointment
         run: |
-          IMAGE_TAG=${GITHUB_SHA::8}   
+          IMAGE_TAG=latest 
           docker build -f Dockerfile-appointment  -t $APPOINTMENT_ECR_REPOSITORY:$IMAGE_TAG .
 
       - name: Build Docker image for Patient
         run: |
-          IMAGE_TAG=${GITHUB_SHA::8}   
+          IMAGE_TAG=latest 
           docker build -f Dockerfile-patient -t $PATIENT_ECR_REPOSITORY:$IMAGE_TAG .
 
       - name: Tag and push Docker image for Appointment
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-          IMAGE_TAG=${GITHUB_SHA::8}
+          IMAGE_TAG=latest
           IMAGE_URI=$ACCOUNT_ID.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.APPOINTMENT_ECR_REPOSITORY }}:$IMAGE_TAG
           docker tag $APPOINTMENT_ECR_REPOSITORY:$IMAGE_TAG $IMAGE_URI
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
@@ -54,9 +77,23 @@ jobs:
       - name: Tag and push Docker image for Patient
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-          IMAGE_TAG=${GITHUB_SHA::8}
+          IMAGE_TAG=latest
           IMAGE_URI=$ACCOUNT_ID.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.PATIENT_ECR_REPOSITORY }}:$IMAGE_TAG
           docker tag $PATIENT_ECR_REPOSITORY:$IMAGE_TAG $IMAGE_URI
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
           docker push $IMAGE_URI
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --region ap-south-1 \
+            --name poc-2-dev-cluster
+
+      - name: Deploy Appointment Pod
+        run: |
+          kubectl apply -f appointment-pod.yaml
+
+      - name: Deploy Patient Pod
+        run: |
+          kubectl apply -f patient-pod.yaml
 
