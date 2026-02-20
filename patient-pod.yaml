@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: patient-pod
+  labels:
+    app: patient
+spec:
+  containers:
+    - name: patient
+      image: 768132174891.dkr.ecr.ap-south-1.amazonaws.com/patient-service:latest
+      ports:
+        - containerPort: 3000

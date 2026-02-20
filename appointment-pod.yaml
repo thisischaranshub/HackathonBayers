@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: appointment-pod
+  labels:
+    app: appointment
+spec:
+  containers:
+    - name: appointment
+      image: 768132174891.dkr.ecr.ap-south-1.amazonaws.com/appointment-service:latest
+      ports:
+        - containerPort: 3000
